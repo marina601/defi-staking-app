@@ -1,4 +1,4 @@
-pragma solidity ^0.8.11;
+pragma solidity ^0.5.16;
 
 // creating a contract for migrations
 contract Migrations {
@@ -16,13 +16,13 @@ contract Migrations {
     }
     
     // function to set the completed migration
-    function set_completed(uint completed) public restricted {
+    function setCompleted(uint completed) public restricted {
         last_comleted_migrations = completed;
     }
 
     // upgrade function
     function upgrade(address new_address) public restricted {
         Migrations upgraded = Migrations(new_address);
-        upgraded.set_completed(last_comleted_migrations);
+        upgraded.setCompleted(last_comleted_migrations);
     }
 }
