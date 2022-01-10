@@ -21,8 +21,8 @@ contract RWD {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    constructor() {
-        balanceOf(msg.sender) = totalSupply;
+    constructor() public {
+        balanceOf[msg.sender] = totalSupply;
     }
 
     function transfer(address _to, uint _value) public returns (bool success) {
