@@ -19,6 +19,7 @@ contract DecentralBank {
     constructor(RWD _rwd, Tether _tether) public {
         rwd = _rwd;
         tether = _tether;
+        owner = msg.sender;
     }
     
     //staking function
@@ -49,7 +50,7 @@ contract DecentralBank {
 
         for(uint i =0; i < stakers.length; i++) {
             address recipients = stakers[i];
-            uint balance = stakingBalance[recipients];
+            uint balance = stakingBalance[recipients] / 9; // devide by 9 to create percentage insentive
             if(balance > 0){
                 rwd.transfer(recipients, balance);
             }
