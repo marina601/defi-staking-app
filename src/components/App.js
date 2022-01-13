@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import Navbar from "./Navbar";
 // eslint-disable-next-line
 import Web3 from "web3";
-import Tether from '../contracts/Tether.sol'
+import Tether from '../truffle_abis/Tether.json'
 import RWD from '../contracts/RWD.sol'
 
 class App extends React.Component {
@@ -28,8 +28,20 @@ class App extends React.Component {
   async loadBlockchainData() {
     const web3 = window.web3
     const accounts = await web3.eth.getAccounts()
-    console.log(accounts)
     this.setState({account: accounts[0]})
+    const networkId = await web3.eth.net.getId()
+
+    // Load Tether Contract 
+    const tetherData = Tether.networks[networkId]
+    if(tetherData) {
+        const tether = new web3.eth.Contract(Tether.abi, tetherData.address);
+        this.setState({tether});
+        let tetherBalance = await tether.methods.balanceOf(this.state.account).call()
+        this.setState({tetherBalance: tetherBalance.toString() })
+        console.log(tetherBalance)
+    } else {
+        window.alert('Error! Tether contract not deployed to network')
+    }
   }
 
   // initialiaze the state of the account
